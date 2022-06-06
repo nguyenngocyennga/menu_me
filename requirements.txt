@@ -28,10 +28,7 @@ joblib
 memoized-property
 termcolor
 
-# computer vision
-opencv-python
-pytesseract
-tesseract
+# Google APIs
 google-api-python-client
 google-cloud
 google-cloud-vision
