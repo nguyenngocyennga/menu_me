@@ -28,7 +28,6 @@ joblib
 memoized-property
 termcolor
 
-
 # Google APIs
 google-api-python-client
 google-cloud
