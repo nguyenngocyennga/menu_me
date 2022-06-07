@@ -51,7 +51,7 @@ streamlit:
 
 heroku_login:
 	-@heroku login
-APP_NAME= menu-me-web
+APP_NAME= menu-me-app
 
 heroku_create_app:
 	-@heroku create ${APP_NAME}
