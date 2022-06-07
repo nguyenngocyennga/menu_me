@@ -10,29 +10,27 @@ pandas
 scikit-learn
 
 # tests/linter
-black
 coverage
 flake8
 pytest
 yapf
 
 # API
-gcsfs
 google-cloud-storage
-mlflow
-s3fs
 
 # utilities
-six>=1.14
+six
 joblib
-memoized-property
-termcolor
+
+# environment
+python-dotenv
 
 # Google-APIs
 google-api-python-client
 google-cloud
 google-cloud-vision
-Google-Images-Search
+google-images-search
+google-cloud-translate
 
 #streamlit
 streamlit
