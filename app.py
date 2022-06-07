@@ -52,23 +52,71 @@ def detect_text(path):
 ###############################
 ###### Text preprocessor ######
 ###############################
-chars_to_remove = ''
-chars_to_remove += string.punctuation
-chars_to_remove += string.digits
-chars_to_remove += '$:●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€'
-def strip(raw_text):
-#    text = response.text_annotations[0].description
-    orig = raw_text.split('\n')
-    clean_entries = []
-    for entry in orig:
+chars_to_remove = '0123456789!"\'#$%&()*+,-./:;<=>?@[\]^_`{|}~♦●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€'
+
+words_to_remove = ['serve','served','serving','appetizer','appetizers','course','price']
+
+drop_words = ['menu','bill','tax','consumer','advisory']
+
+def strip(text):
+    menu_original = text.split('\n')
+    
+    menu_chars_removed = []
+    for item in menu_original:
         for char in chars_to_remove:
-            entry = entry.replace(char,'')
-        clean_entries.append(entry)
-    clean_entries = [x for x in clean_entries if len(x)>4]
-    print(orig)
-    print()
-    print(clean_entries)
-    return clean_entries
+            item = item.replace(char,'')
+        menu_chars_removed.append(item)
+        
+    menu_words_removed = []
+    for item in menu_chars_removed:
+        temporary = []
+        for word in item.split(' '):
+            if word.lower() not in words_to_remove:
+                temporary.append(word)
+        words_removed = ' '.join(temporary)
+        menu_words_removed.append(words_removed)
+        
+    menu_entries_dropped = []
+    for item in menu_words_removed:
+        temporary = []
+        for word in item.split(' '):
+            if word.lower() in drop_words:
+                temporary = []
+                pass
+            else:
+                temporary.append(word)
+        entries_dropped = ' '.join(temporary)
+        menu_entries_dropped.append(entries_dropped)
+                  
+    menu_entries_dropped = [item for item in menu_entries_dropped if len(item)>4]
+    return menu_entries_dropped
+
+##################################
+######   Image Search API   ######
+##################################
+from google_images_search import GoogleImagesSearch
+import os
+from dotenv import load_dotenv, find_dotenv
+env_path = find_dotenv()
+load_dotenv(env_path)
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_CX = os.getenv('GOOGLE_CX')
+
+def search_image(text):
+    gis = GoogleImagesSearch(GOOGLE_API_KEY, GOOGLE_CX)
+
+    _search_params = {
+        'q': f'{text} recipe',
+        'num': 1
+    }
+
+    gis.search(search_params=_search_params)
+    # print(gis.results())
+    img_url = ''
+    for image in gis.results():
+        img_url = image.url  # image direct url
+    
+    return img_url
 
 ###############################
 ######   Translate API   ######
@@ -95,10 +143,13 @@ def translate_text(target, text):
     print(u"Text: {}".format(result["input"]))
     print(u"Translation: {}".format(result["translatedText"]))
     print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
+    return result["translatedText"]
 
 
 
-
+###############################
+######   Streamlit Test   #####
+###############################
 
 if img_file_buffer is not None:
     # To read image file buffer as a PIL Image:
@@ -113,7 +164,32 @@ if img_file_buffer is not None:
 
     raw_output = detect_text("img.jpg")
     cleaned_text = strip(raw_output)
-    st.write(cleaned_text)
+    # st.write(cleaned_text)
+
+    all_dishes_url = []
+    all_dishes_translation = []
+    for item in cleaned_text:
+        img_url = search_image(item)
+        all_dishes_url.append(img_url)
+        translated_text = translate_text(target, item)
+        all_dishes_translation.append(translated_text)
+
+    final_menu = pd.DataFrame(
+        {
+            'dish_name': cleaned_text,
+            'img_url': all_dishes_url,
+            'translated_name': all_dishes_translation
+        }
+    )
+
+    print(cleaned_text)
+    print(all_dishes_url)
+    print(all_dishes_translation)
+    print('#############')
+    print(final_menu)
+
+    # st.write(all_dishes_url)
+    # st.write(all_dishes_translation)
     
     # Image API for cleaned_text
     
@@ -122,5 +198,4 @@ if img_file_buffer is not None:
     
     
     # Display menu in streamlit
-    display_menu(sample_data)
-
+    display_menu(final_menu)
