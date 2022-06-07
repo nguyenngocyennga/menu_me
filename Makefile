@@ -41,6 +41,29 @@ count_lines:
         '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
 
+
+# ----------------------------------
+#      Heroku
+# ----------------------------------
+
+streamlit:
+	-@streamlit run app.py
+
+heroku_login:
+	-@heroku login
+APP_NAME= menu-me-web
+
+heroku_create_app:
+	-@heroku create ${APP_NAME}
+
+deploy_heroku:
+	@heroku git:remote -a  ${APP_NAME}
+	@git add .
+	@git commit -m"done"
+	-@git push heroku master
+	-@heroku ps:scale web=1
+
+
 # ----------------------------------
 #      UPLOAD PACKAGE TO PYPI
 # ----------------------------------
