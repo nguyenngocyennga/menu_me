@@ -65,7 +65,7 @@ deploy_heroku:
 
 
 # ----------------------------------
-#      UPLOAD PACKAGE TO PYPI
+#      UPLOADING PACKAGE TO PYPI
 # ----------------------------------
 PYPI_USERNAME=<AUTHOR>
 build:
