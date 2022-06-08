@@ -6,7 +6,7 @@ import base64
 from io import BytesIO
 import string
 
-img_file_buffer = st.camera_input("Take a picture!")  
+img_file_buffer = st.camera_input("Take a picture!")
 
 sample_data = pd.DataFrame({
     'dish_name': ['Nasi Goreng', 'Mie Goreng'],'img_url': ["https://cdn1-production-images-kly.akamaized.net/KxuztQKl3tnUN0Fw5iAwKsnX_u0=/0x148:1920x1230/640x360/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/3093328/original/069244600_1585909700-fried-2509089_1920.jpg", "https://cdn0-production-images-kly.akamaized.net/ocS8U9pjo2A1EDhgmyvw1Deo8Ko=/469x260/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3129172/original/099632200_1589527804-shutterstock_1455941861.jpg"],
@@ -60,13 +60,13 @@ drop_words = ['menu','bill','tax','consumer','advisory']
 
 def strip(text):
     menu_original = text.split('\n')
-    
+
     menu_chars_removed = []
     for item in menu_original:
         for char in chars_to_remove:
             item = item.replace(char,'')
         menu_chars_removed.append(item)
-        
+
     menu_words_removed = []
     for item in menu_chars_removed:
         temporary = []
@@ -75,7 +75,7 @@ def strip(text):
                 temporary.append(word)
         words_removed = ' '.join(temporary)
         menu_words_removed.append(words_removed)
-        
+
     menu_entries_dropped = []
     for item in menu_words_removed:
         temporary = []
@@ -87,7 +87,7 @@ def strip(text):
                 temporary.append(word)
         entries_dropped = ' '.join(temporary)
         menu_entries_dropped.append(entries_dropped)
-                  
+
     menu_entries_dropped = [item for item in menu_entries_dropped if len(item)>4]
     return menu_entries_dropped
 
@@ -115,7 +115,7 @@ def search_image(text):
     img_url = ''
     for image in gis.results():
         img_url = image.url  # image direct url
-    
+
     return img_url
 
 ###############################
@@ -190,9 +190,6 @@ if img_file_buffer is not None:
 
     # st.write(all_dishes_url)
     # st.write(all_dishes_translation)
-    
-    # Image API for cleaned_text
-    # Translation API for cleaned_text
     # Display menu in streamlit
     
     display_menu(final_menu)
