@@ -9,8 +9,6 @@ from google.cloud import storage
 import os
 from google.oauth2 import service_account
 import json
-
-
 from dotenv import load_dotenv, find_dotenv
 env_path = find_dotenv()
 load_dotenv(env_path)
