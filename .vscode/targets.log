@@ -6,10 +6,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
- 
 
-# Make data base, printed on Wed Jun  8 09:27:10 2022
- 
+# Make data base, printed on Wed Jun  8 09:41:11 2022
 
 # Variables
 
@@ -50,7 +48,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # makefile (from `Makefile', line 70)
 PYPI_USERNAME = <AUTHOR>
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-64e7f60e-d7aa-4c93-babf-8b868845e224.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-80077e34-3996-43c0-bc1a-3cff4c4ff7eb.sock
 # environment
 VSCODE_CWD = /Users/rubenstuiver/code/nganguyenny/menu_me
 # environment
@@ -110,7 +108,6 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 3
 # default
- 
 MAKE_VERSION := 3.81
 # environment
 USER = rubenstuiver
@@ -147,7 +144,7 @@ TERM_PROGRAM_VERSION = 440
 # environment
 NVM_DIR = /Users/rubenstuiver/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.4903456.4903462.41A1D799-8EFB-41A4-803F-1D94C2AFF9F2
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.4903456.4903462.9ECD1303-97B1-4E4C-A66C-8255A4EA8474
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -197,9 +194,9 @@ VSCODE_PID = 53143
 
 # Directories
 
-# . (device 16777234, inode 6827776): 24 files, no impossibilities.
+# . (device 16777234, inode 6827776): 23 files, no impossibilities.
 
-# 24 files, no impossibilities in 1 directories.
+# 23 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -304,6 +301,7 @@ count_lines:
 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
 	'{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
+ 
 	@find ./scripts -name '*-*' -exec  wc -l {} \; | sort -n| awk \
 	'{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
@@ -384,7 +382,6 @@ pypi_test:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 75):
- 
 	@twine upload -r testpypi dist/* -u $(PYPI_USERNAME)
 	
 
@@ -409,6 +406,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed Jun  8 09:27:10 2022
+# Finished Make data base on Wed Jun  8 09:41:11 2022
 
  

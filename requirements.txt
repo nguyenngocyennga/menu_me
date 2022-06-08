@@ -32,9 +32,14 @@ google-cloud
 google-cloud-vision
 google-images-search
 google-cloud-translate
+google-cloud-storage
 
 #streamlit
 streamlit
 fastapi
 
 google-cloud-translate==2.0.1
+
+dotenv
+uvicorn
+oauth2client
