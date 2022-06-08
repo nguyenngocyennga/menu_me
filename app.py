@@ -5,19 +5,34 @@ import pandas as pd
 import base64
 from io import BytesIO
 import string
+from google.cloud import vision
+import io
+import six
+from google.cloud import translate_v2 as translate
 
 img_file_buffer = st.camera_input("Take a picture!")  
 
 sample_data = pd.DataFrame({
-    'dish_name': ['Nasi Goreng', 'Mie Goreng'],'img_url': ["https://cdn1-production-images-kly.akamaized.net/KxuztQKl3tnUN0Fw5iAwKsnX_u0=/0x148:1920x1230/640x360/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/3093328/original/069244600_1585909700-fried-2509089_1920.jpg", "https://cdn0-production-images-kly.akamaized.net/ocS8U9pjo2A1EDhgmyvw1Deo8Ko=/469x260/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3129172/original/099632200_1589527804-shutterstock_1455941861.jpg"],
-    'translated_name': ['Fried Rice', 'Fried Noodles']
+    'dish_name': ['Nasi Goreng', 'Mie Goreng', 'Nasi Goreng', 'Mie Goreng'],
+    'img_url': ["https://cdn1-production-images-kly.akamaized.net/KxuztQKl3tnUN0Fw5iAwKsnX_u0=/0x148:1920x1230/640x360/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/3093328/original/069244600_1585909700-fried-2509089_1920.jpg", "https://cdn0-production-images-kly.akamaized.net/ocS8U9pjo2A1EDhgmyvw1Deo8Ko=/469x260/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3129172/original/099632200_1589527804-shutterstock_1455941861.jpg", "https://cdn1-production-images-kly.akamaized.net/KxuztQKl3tnUN0Fw5iAwKsnX_u0=/0x148:1920x1230/640x360/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/3093328/original/069244600_1585909700-fried-2509089_1920.jpg", "https://cdn0-production-images-kly.akamaized.net/ocS8U9pjo2A1EDhgmyvw1Deo8Ko=/469x260/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3129172/original/099632200_1589527804-shutterstock_1455941861.jpg"],
+    'translated_name': ['Fried Rice', 'Fried Noodles', 'Fried Rice', 'Fried Noodles']
 })
 
+###############################
+######## Display menu #########
+###############################
 def display_menu(df):
+    with open('front-end/styles.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
     for index, row in df.iterrows():
-        st.image(row['img_url'], use_column_width='always')
-        st.title(row['dish_name'])
-        st.subheader(row['translated_name'])
+        st.markdown(f'''<div class="card-product">
+            <img src="{row['img_url']}"/>
+            <div class="card-product-infos">
+                <h2>{row['dish_name']}</h2>
+                <p>{row['translated_name']}</p>
+            </div>
+            </div>''', unsafe_allow_html=True)
 
 
 ###############################
@@ -25,8 +40,6 @@ def display_menu(df):
 ###############################
 def detect_text(path):
     """Detects text in the file."""
-    from google.cloud import vision
-    import io
     client = vision.ImageAnnotatorClient()
 
     with io.open(path, 'rb') as image_file:
@@ -122,14 +135,13 @@ def search_image(text):
 ######   Translate API   ######
 ###############################
 target='en'
+
 def translate_text(target, text):
     """Translates text into the target language.
 
     Target must be an ISO 639-1 language code.
     See https://g.co/cloud/translate/v2/translate-reference#supported_languages
     """
-    import six
-    from google.cloud import translate_v2 as translate
 
     translate_client = translate.Client()
 
@@ -154,7 +166,7 @@ def translate_text(target, text):
 if img_file_buffer is not None:
     # To read image file buffer as a PIL Image:
     img = Image.open(img_file_buffer)
-    st.write(type(img))
+    # st.write(type(img))
     rgb_im = img.convert("RGB")
     rgb_im.save("img.jpg")
     #converted_pic=encode_image(rgb_im)
@@ -188,14 +200,15 @@ if img_file_buffer is not None:
     print('#############')
     print(final_menu)
 
-    # st.write(all_dishes_url)
-    # st.write(all_dishes_translation)
-    
-    # Image API for cleaned_text
-    
-    
-    # Translation API for cleaned_text
-    
-    
     # Display menu in streamlit
     display_menu(final_menu)
+    final_menu.to_csv('menu_df.csv')
+
+
+####################################
+######   Streamlit Front-end   #####
+####################################
+# st.dataframe(sample_data)
+
+# display_menu(sample_data)
+
