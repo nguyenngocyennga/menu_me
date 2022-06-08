@@ -192,10 +192,7 @@ if img_file_buffer is not None:
     # st.write(all_dishes_translation)
     
     # Image API for cleaned_text
-    
-    
     # Translation API for cleaned_text
-    
-    
     # Display menu in streamlit
+    
     display_menu(final_menu)
