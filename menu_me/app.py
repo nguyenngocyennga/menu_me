@@ -13,11 +13,11 @@ import string
 #     'translated_name': ['Fried Rice', 'Fried Noodles']
 # })
 
-def display_menu(df):
-    for index, row in df.iterrows():
-        st.image(row['img_url'], use_column_width='always')
-        st.title(row['dish_name'])
-        st.subheader(row['translated_name'])
+# def display_menu(df):
+#     for index, row in df.iterrows():
+#         st.image(row['img_url'], use_column_width='always')
+#         st.title(row['dish_name'])
+#         st.subheader(row['translated_name'])
 
 
 ###############################
@@ -31,7 +31,6 @@ def detect_text(path):
 
     with io.open(path, 'rb') as image_file:
         content = image_file.read()
-    #content = x
     image = vision.Image(content=content)
 
     response = client.text_detection(image=image)

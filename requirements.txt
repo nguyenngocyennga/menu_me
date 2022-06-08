@@ -1,45 +1,28 @@
-# packaging
 pip>=9
 setuptools>=26
 twine
 wheel>=0.29
-
-# data science
 numpy
 pandas
 scikit-learn
-
-# tests/linter
 coverage
 flake8
 pytest
 yapf
-
-# API
 google-cloud-storage
 s3fs
-
-# utilities
 six
 joblib
-
-# environment
 python-dotenv
-
-# Google-APIs
 google-api-python-client
 google-cloud
 google-cloud-vision
 google-images-search
 google-cloud-translate
 google-cloud-storage
-
-#streamlit
 streamlit
 fastapi
-
 google-cloud-translate==2.0.1
-
 dotenv
 uvicorn
 oauth2client
