@@ -5,54 +5,60 @@ height: 812px;
 
 .card-product {
   overflow: hidden;
-  height: 200px;
+  height: 90px;
   background: white;
   /* box-shadow: 0 0 15px rgba(178, 178, 178, 0.394); */
   display: flex;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 20px;
   /* margin: 30px 50px; */
-  padding: 3%;
+  padding: 10px;
   /* margin-left: 5%;
   margin-right: 5%; */
-  margin: 2% 5%;
+  margin: 5px 1px;
 }
 
 .card-product:hover {
-  box-shadow: 0 0 15px rgba(167, 167, 167, 0.464);
+  box-shadow: 0 0 12px rgba(209, 206, 206, 0.36);
 }
 
 .card-product img {
-  height: 100%;
-  width: 200px;
+  height: 82px;
+  width: 82px;
+  max-width: 82px;
+  min-width: 82px;
   object-fit: cover;
-  filter: drop-shadow(0px 5px 10px rgba(221, 215, 188, 0.9));
-  border-radius: 40px;
+  filter: drop-shadow(0px 2px 5px rgba(221, 215, 188, 0.9));
+  border-radius: 25px;
   /* margin: 10%; */
-  margin-right: 3%
+  margin-right: 5px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
 
 .card-product h2 {
-  font-size: 2rem;
+  font-size: 13px;
   font-weight: bold;
   /* margin-left: 0; */
   margin: 0;
   font-family: "Roboto", "Helvetica Neue";
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
 }
 
 .card-product p {
-  font-size: 1.5rem;
+  font-size: 13px;
   /* line-height: 1.4; */
   /* margin-top: 5%; */
   /* opacity: .7; */
   /* margin-bottom: 0; */
   /* margin-top: 8px; */
+  /* margin-top: 4px; */
+  margin: 0;
   font-family: "Raleway", "Helvetica Neue";
-  color: #8C8A9D;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #62616a;
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
 }
 
 .card-product .card-product-infos {
