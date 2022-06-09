@@ -42,6 +42,9 @@ CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
 # img_file_buffer = st.camera_input("Take a picture!")
 
 # if img_file_buffer is not None:
+from streamlit import legacy_caching
+legacy_caching.clear_cache()
+
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
