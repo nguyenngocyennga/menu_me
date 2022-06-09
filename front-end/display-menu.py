@@ -3,7 +3,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
-#from google.cloud import storage
+from google.cloud import storage
 import os
 from google.oauth2 import service_account
 import json
