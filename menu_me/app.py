@@ -2,9 +2,9 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
-import base64
 from io import BytesIO
 import string
+#import base64
 
 
 ###############################
