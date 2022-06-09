@@ -39,13 +39,12 @@ def detect_text():
 ###############################
 ###### Text preprocessor ######
 ###############################
-def strip(text):  
+def strip(response):
     # remove these chars from entry
     chars_to_remove = '0123456789!"\'#$%&()*+,-./:;<=>?@[\]^_`{|}~♦●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€'
 
     # remove entry if it exactly matches any of these
-    drop_exact_words = ['sandwiches','restaurant','menu',
-                        'restaurant menu','thank you','drinks',
+    drop_exact_words = ['sandwiches','restaurant','menu', 'restaurant menu','thank you','drinks',
                         'appetizer','appetizers','mains','dessert',
                         'side','sides','side order','breakfast','lunch'
                        'dinner','supper','starter','starters','local',
@@ -141,7 +140,7 @@ def search_image(query):
     _search_params = {
     'q': f'{query} recipe',
     'num': 1,
-    'imgSize': 'large',
+    # 'imgSize': 'large',
     'imgType': 'photo',
     'imgColorType': 'color'}
     
