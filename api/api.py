@@ -1,3 +1,4 @@
+import imghdr
 from menu_me.app import detect_text
 from menu_me.app import strip
 from menu_me.app import search_image
@@ -27,12 +28,21 @@ def api_function():
     text_clean_url=[]
     text_clean_translated=[]
     for item in text_clean:
-        text_clean_url.append(search_image(item))
-        text_clean_translated.append(translate_text(target='en', text=item))
+        img_url = search_image(item)
+        text_clean_url.append(img_url)
+        translated_name = translate_text(target='en', text=item)
+        text_clean_translated.append(translated_name)
+        print('################################')
+        print('Original Dish Name:: ', item)
+        print('Image Url: ', img_url)
+        print('Translated Name: ', translated_name)
 
     final_menu ={
             'dish_name': text_clean,
             'img_url': text_clean_url,
             'translated_name': text_clean_translated
                 }
+    print('############################################')
+    print('###   API is successfully constructed!   ###')
+    print('############################################')
     return final_menu

@@ -23,6 +23,6 @@ google-cloud-storage
 streamlit
 fastapi
 google-cloud-translate==2.0.1
-dotenv
+python-dotenv
 uvicorn
 oauth2client

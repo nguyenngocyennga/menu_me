@@ -126,7 +126,7 @@ def translate_text(target, text):
     # will return a sequence of results for each text.
     result = translate_client.translate(text, target_language=target)
 
-    print(u"Text: {}".format(result["input"]))
-    print(u"Translation: {}".format(result["translatedText"]))
-    print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
+    # print(u"Text: {}".format(result["input"]))
+    # print(u"Translation: {}".format(result["translatedText"]))
+    # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
     return result["translatedText"]
