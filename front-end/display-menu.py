@@ -3,15 +3,17 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
-import base64
-from io import BytesIO
-import string
-from google.cloud import storage
+#from google.cloud import storage
 import os
 from google.oauth2 import service_account
 import json
 from dotenv import load_dotenv, find_dotenv
 from api.api import api_function
+#import base64
+#from io import BytesIO
+
+
+
 
 ###############################
 ######## Display menu #########
@@ -56,4 +58,3 @@ if uploaded_file is not None:
     st.write('Your menu is coming soon... 🌮 🌯 🥙')
     df = api_function()
     display_menu(df)
-
