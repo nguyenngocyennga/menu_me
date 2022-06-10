@@ -1,0 +1,12 @@
+# steps:
+#   - name: gcr.io/cloud-builders/docker
+#     entrypoint: 'docker'
+#     args: 
+#       - build
+#       - '--no-cache'
+#       - '--network=cloudbuild'
+#       - '-t'
+#       - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+#       - .
+#       - '-f' 
+#       - 'Dockerfile'

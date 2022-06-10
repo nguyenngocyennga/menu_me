@@ -1,8 +1,4 @@
-import imghdr
-from menu_me.app import detect_text
-from menu_me.app import strip
-from menu_me.app import search_image
-from menu_me.app import translate_text
+from menu_me.app import detect_text, strip, search_image, translate_text
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -32,7 +28,7 @@ def api_function():
         text_clean_url.append(img_url)
         translated_name = translate_text(target='en', text=item)
         text_clean_translated.append(translated_name)
-        print('################################')
+        print('')
         print('Original Dish Name:: ', item)
         print('Image Url: ', img_url)
         print('Translated Name: ', translated_name)
