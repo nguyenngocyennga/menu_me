@@ -3,7 +3,6 @@ FROM python:3.8.13-buster
 COPY menu_me /menu_me
 COPY requirements.txt /requirements.txt
 COPY api /api
-# COPY .env /.env
 
 RUN pip install -r requirements.txt
 # RUN pip install -e . # installing as one package!!! No need for docker
