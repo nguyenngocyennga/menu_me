@@ -7,13 +7,16 @@ import string
 #import base64
 from google_images_search import GoogleImagesSearch
 import os
-from dotenv import load_dotenv, find_dotenv
+from google.oauth2 import service_account
+import json
+# from dotenv import load_dotenv, find_dotenv
 
-#Connecting with GCP
-env_path = find_dotenv()
-load_dotenv(env_path)
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-GOOGLE_CX = os.getenv('GOOGLE_CX')
+# #Connecting with GCP
+# env_path = find_dotenv()
+# load_dotenv(env_path)
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+GOOGLE_CX = os.environ.get('GOOGLE_CX')
+CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
 ###############################
 ###### Google Vision API ######
@@ -21,7 +24,11 @@ GOOGLE_CX = os.getenv('GOOGLE_CX')
 def detect_text():
     """Detects text in the file."""
     from google.cloud import vision
-    client = vision.ImageAnnotatorClient()
+
+    # Google Authentication
+    credentials = service_account.Credentials.from_service_account_info(json.loads(CREDENTIALS_JSON_GOOGLE_CLOUD))
+
+    client = vision.ImageAnnotatorClient(credentials=credentials)
     image=vision.Image()
     image.source.image_uri='https://storage.googleapis.com/menu_me_bucket/img.jpg'
 
@@ -140,7 +147,7 @@ def search_image(query):
     _search_params = {
     'q': f'{query} recipe',
     'num': 1,
-    # 'imgSize': 'large',
+    'imgSize': 'large',
     'imgType': 'photo',
     'imgColorType': 'color'}
     
@@ -219,7 +226,7 @@ def search_image(query):
     _search_params = {
     'q': f'{query} recipe',
     'num': 3,
-    'imgSize': 'large',
+    # 'imgSize': 'large',
     'imgType': 'photo',
     'imgColorType': 'color',
     'safe': 'medium'}
