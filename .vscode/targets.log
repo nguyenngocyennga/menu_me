@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Wed Jun  8 09:41:11 2022
+# Make data base, printed on Fri Jun 10 10:13:52 2022
 
 # Variables
 
@@ -38,7 +38,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/bin/make
 # environment
-GOOGLE_APPLICATION_CREDENTIALS = /Users/rubenstuiver/Documents/lewagon-project-1-351913-951be29d6aca.json
+GOOGLE_APPLICATION_CREDENTIALS = /Users/rubenstuiver/Documents/menu-me-352703-12bcb97b7f5b.json
 # makefile (from `Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
 # environment
@@ -48,7 +48,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # makefile (from `Makefile', line 70)
 PYPI_USERNAME = <AUTHOR>
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-80077e34-3996-43c0-bc1a-3cff4c4ff7eb.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-39c9b922-a07a-40a7-984b-db4151072d8d.sock
 # environment
 VSCODE_CWD = /Users/rubenstuiver/code/nganguyenny/menu_me
 # environment
@@ -100,6 +100,8 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
+GCR_MULTI_REGION = asia.gcr.io
+# environment
 XPC_FLAGS = 0x0
 # default
 MAKE = $(MAKE_COMMAND)
@@ -114,7 +116,9 @@ USER = rubenstuiver
 # makefile
 .DEFAULT_GOAL := install_requirements
 # environment
-TERM_SESSION_ID = 287D0584-D24D-4600-8B70-BEE12055C008
+TERM_SESSION_ID = E260F46B-38F9-495F-AAD1-43C7F09B44B5
+# environment
+GCP_PROJECT_ID = menu-me-352703
 # environment
 LESS = -R
 # automatic
@@ -144,7 +148,7 @@ TERM_PROGRAM_VERSION = 440
 # environment
 NVM_DIR = /Users/rubenstuiver/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.4903456.4903462.9ECD1303-97B1-4E4C-A66C-8255A4EA8474
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.4903456.4903462.C2AD390C-F092-4A22-AA2F-D0B7F77F2FD9
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -164,6 +168,8 @@ EDITOR = code
 # environment
 PAGER = less
 # environment
+DOCKER_IMAGE_NAME = api-menu-me-docker
+# environment
 LC_ALL = C
 # environment
 PYENV_VIRTUALENV_DISABLE_PROMPT = 1
@@ -180,13 +186,15 @@ PYENV_VIRTUALENV_INIT = 1
 # environment
 MAKELEVEL := 0
 # environment
+GCR_REGION = asia-southeast1
+# environment
 LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 53143
+VSCODE_PID = 69549
 # variable set hash-table stats:
-# Load=87/1024=8%, Rehash=0, Collisions=2/113=2%
+# Load=91/1024=9%, Rehash=0, Collisions=2/117=2%
 
 # Pattern-specific Variable Values
 
@@ -194,9 +202,9 @@ VSCODE_PID = 53143
 
 # Directories
 
-# . (device 16777234, inode 6827776): 23 files, no impossibilities.
+# . (device 16777234, inode 6827776): 24 files, no impossibilities.
 
-# 23 files, no impossibilities in 1 directories.
+# 24 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -246,7 +254,7 @@ pypi:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-07 11:29:23
+#  Last modified 2022-06-08 14:57:08
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -297,11 +305,11 @@ count_lines:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 #  commands to execute (from `Makefile', line 34):
 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
 	'{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
- 
 	@find ./scripts -name '*-*' -exec  wc -l {} \; | sort -n| awk \
 	'{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
@@ -366,7 +374,7 @@ streamlit:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 50):
-	-@streamlit run app.py
+	-@streamlit run menu_me/display-menu.py
 	
 
 ftest:
@@ -406,6 +414,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed Jun  8 09:41:11 2022
+# Finished Make data base on Fri Jun 10 10:13:52 2022
 
  
