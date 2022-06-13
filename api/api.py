@@ -1,4 +1,4 @@
-from menu_me.app import detect_text, strip, search_image, translate_text
+from menu_me.app import detect_text, strip, search_image, translate_text, allergy_check
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -28,6 +28,7 @@ def api_function(path):
         text_clean_url.append(img_url)
         translated_name = translate_text(target='en', text=item)
         text_clean_translated.append(translated_name)
+        allergy = allergy_check(translated_name)
         print('')
         print('Original Dish Name:: ', item)
         print('Image Url: ', img_url)
@@ -36,7 +37,8 @@ def api_function(path):
     final_menu ={
             'dish_name': text_clean,
             'img_url': text_clean_url,
-            'translated_name': text_clean_translated
+            'translated_name': text_clean_translated,
+            'allergy_information': allergy
                 }
     print('############################################')
     print('###   API is successfully constructed!   ###')
