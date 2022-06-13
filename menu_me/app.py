@@ -21,7 +21,7 @@ CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 ###############################
 ###### Google Vision API ######
 ###############################
-def detect_text():
+def detect_text(path):
     """Detects text in the file."""
     from google.cloud import vision
 
@@ -30,7 +30,7 @@ def detect_text():
 
     client = vision.ImageAnnotatorClient(credentials=credentials)
     image=vision.Image()
-    image.source.image_uri='https://storage.googleapis.com/menu_me_bucket/img.jpg'
+    image.source.image_uri=path
 
     response = client.text_detection(image=image)
 
