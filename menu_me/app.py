@@ -9,11 +9,17 @@ from google_images_search import GoogleImagesSearch
 import os
 from google.oauth2 import service_account
 import json
+
+######### LOCAL ENV ##############
 # from dotenv import load_dotenv, find_dotenv
 
 # #Connecting with GCP
 # env_path = find_dotenv()
 # load_dotenv(env_path)
+# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+# GOOGLE_CX = os.getenv('GOOGLE_CX')
+# CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
+
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 GOOGLE_CX = os.environ.get('GOOGLE_CX')
 CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
@@ -21,7 +27,7 @@ CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 ###############################
 ###### Google Vision API ######
 ###############################
-def detect_text():
+def detect_text(path):
     """Detects text in the file."""
     from google.cloud import vision
 
@@ -30,7 +36,7 @@ def detect_text():
 
     client = vision.ImageAnnotatorClient(credentials=credentials)
     image=vision.Image()
-    image.source.image_uri='https://storage.googleapis.com/menu_me_bucket/img.jpg'
+    image.source.image_uri=path
 
     response = client.text_detection(image=image)
 
@@ -51,43 +57,44 @@ def strip(response):
     chars_to_remove = '0123456789!"\'#$%&()*+,-./:;<=>?@[\]^_`{|}~♦●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€'
 
     # remove entry if it exactly matches any of these
-    drop_exact_words = ['sandwiches','restaurant','menu', 'restaurant menu','thank you','drinks',
+    drop_exact_words = ['sandwiches','restaurant','menu',
+                        'restaurant menu','thank you','drinks',
                         'appetizer','appetizers','mains','dessert',
                         'side','sides','side order','breakfast','lunch'
                        'dinner','supper','starter','starters','local',
-                        'fresh','food','main']
-    
+                        'fresh','food','main','your','logo','brand name']
+
     # remove these words from entry
     words_to_remove = ['menu','restaurant','price','appetizer',
                        'appetizers','course','price','extra','extras']
 
     # remove entry if it contains any of these
-    drop_contain_words = ['tax','consumer','advisory','illness']
-    
+    drop_contain_words = ['tax','consumer','advisory','illness','facebook','instagram']
+
     # remove entry if it starts with any of these
-    drop_start_words = ['include','includes','including','lorem','with','and',
+    drop_start_words = ['add','include','includes','including','lorem','with','and',
                        'served','serve']
-    
+
     # drop entry if it contains fewer chars than minimum
     min_length = 4
-    
-    
+
+
     text = response.text_annotations[0].description
     menu_original = text.split('\n')
-    
+
     menu_chars_removed = []
     for item in menu_original:
         for char in chars_to_remove:
-            item = item.replace(char,'')
+            item = item.replace(char,' ')
         menu_chars_removed.append(item)
-        
+
     menu_exact_matches_dropped = []
     for item in menu_chars_removed:
         if item.lower() in drop_exact_words:
             pass
         else:
             menu_exact_matches_dropped.append(item)
-        
+
     menu_words_removed = []
     for item in menu_exact_matches_dropped:
         temporary = []
@@ -96,7 +103,7 @@ def strip(response):
                 temporary.append(word)
         remaining_words = ' '.join(temporary)
         menu_words_removed.append(remaining_words)
-         
+
     menu_contains_dropped = []
     for item in menu_words_removed:
         temporary = []
@@ -108,7 +115,7 @@ def strip(response):
                 temporary.append(word)
         remaining_words = ' '.join(temporary)
         menu_contains_dropped.append(remaining_words)
-        
+
     menu_starts_dropped = []
     for item in menu_contains_dropped:
         temporary = item.split(' ')
@@ -116,18 +123,25 @@ def strip(response):
             pass
         else:
             menu_starts_dropped.append(item)
-    
+
     menu_exact_matches_dropped = []
     for item in menu_starts_dropped:
         if item.lower() in drop_exact_words:
             pass
         else:
             menu_exact_matches_dropped.append(item)
-            
+
     bounding_white_space_removed = [item.strip() for item in menu_exact_matches_dropped]
     too_short_dropped = [item for item in bounding_white_space_removed if len(item) >= min_length]
-    stripped_menu = too_short_dropped
-   
+
+    duplicates_dropped = []
+    for item in too_short_dropped:
+        if item not in duplicates_dropped:
+            duplicates_dropped.append(item)
+
+
+    stripped_menu = duplicates_dropped
+
     print(menu_original)
     return(stripped_menu)
 
@@ -135,58 +149,67 @@ def strip(response):
 ##################################
 ######   Image Search API   ######
 ##################################
+
 def search_image(query):
     from google_images_search import GoogleImagesSearch
     from google.cloud import vision
-    
+
     print(f'searching for {query}...')
     print()
 
     gis = GoogleImagesSearch(GOOGLE_API_KEY,GOOGLE_CX)
-    
+
     _search_params = {
     'q': f'{query} recipe',
     'num': 1,
-    'imgSize': 'large',
+    #'imgSize': 'large',
     'imgType': 'photo',
     'imgColorType': 'color'}
-    
+
     gis.search(search_params=_search_params)
     print('fetching image:')
     if len(gis.results()) == 0:
         print('no image found, not verified as food.')
         print()
         return None
-    
+
     url = gis.results()[0].url
     print(url)
     print()
-    
-    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae']
-    
+
+    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae','fuyung hai']
+
     if query.lower() in verified_queries:
         print(f'{query} already in known foods database, no need to verify!')
         print()
         return url
-    
+
     client = vision.ImageAnnotatorClient()
     image = vision.Image()
     image.source.image_uri = url
-    
+
     response = client.label_detection(image=image, max_results=1)
     label = [lab.description for lab in response.label_annotations]
     score = [lab.score for lab in response.label_annotations]
-    
+
+    text_response = client.text_detection(image=image)
+    texts = text_response.text_annotations
+    n_chars = 0
+    if len(texts)>0:
+        n_chars = len(texts[0].description)
+
     print('verification filter:')
-    print('label must be Food')
+    print('label must be Food or Tableware')
     print('score must be above .96')
+    print('number of chars must be below 100')
     print()
     print(f'label: {label}')
     print(f'label score: {score}')
+    print(f'chars detected: {n_chars}')
     print()
-    
+
     try:
-        if label[0] == 'Food' and score[0] > .96:
+        if (label[0] == 'Food' or label[0] == 'Tableware') and score[0] > .96 and n_chars < 100:
             print('verified as food!')
             print()
             print(url)
@@ -194,43 +217,16 @@ def search_image(query):
             return url
     except IndexError:
         print('label missing, not verified as food')
-        return None
-        
-    
-    if label[0] in ['Food', 'Tableware']:
-        text_response = client.text_detection(image=image)
-        texts = text_response.text_annotations
-        n_chars = 0
-        if len(texts)>0:
-            n_chars = len(texts[0].description)
-    
-    
-        print('verification filter:')
-        print('label must be Food or Tableware')
-        print('score must be above .96')
-        print('number of chars must be below 100')
-        print()
-    
-        print(f'label: {label}')
-        print(f'label score: {score}')
-        print(f'chars detected: {n_chars}')
-        print()
-    
-        if (label[0] == 'Food' or label[0] == 'Tableware') and score[0] > .96 and n_chars < 100:
-            print('verified as food!')
-            print()
-            print(url)
-            print()
-            return url
-    
+        pass
+
     _search_params = {
     'q': f'{query} recipe',
     'num': 3,
-    # 'imgSize': 'large',
+    #'imgSize': 'large',
     'imgType': 'photo',
     'imgColorType': 'color',
     'safe': 'medium'}
-        
+
     gis = GoogleImagesSearch(GOOGLE_API_KEY,GOOGLE_CX)
     gis.search(search_params=_search_params)
     urls = [result.url for result in gis.results()]
@@ -242,68 +238,42 @@ def search_image(query):
     for url in urls:
         print(url)
     print()
-    
-    print('verification filter:')
-    print('label must be Food')
-    print('score must be above .96')
-    print()
-    
+
     labels = []
     scores = []
+    char_counts = []
     for url in urls:
+
         image.source.image_uri = url
         response = client.label_detection(image=image, max_results=1)
         label = [lab.description for lab in response.label_annotations]
         score = [lab.score for lab in response.label_annotations]
         labels.append(label)
         scores.append(score)
-        
+
+        text_response = client.text_detection(image=image)
+        texts = text_response.text_annotations
+        n_chars = 0
+        if len(texts)>0:
+            n_chars = len(texts[0].description)
+        char_counts.append(n_chars)
+
     print(f'labels: {labels}')
     print(f'label scores: {scores}')
+    print(f'chars detected: {char_counts}')
     print()
 
-    try:
-        for label,score in zip(labels,scores):
-            if label[0] == 'Food' and score[0] > .96:
+    for label,score,n_chars in zip(labels,scores, char_counts):
+        try:
+            if (label[0] == 'Food' or label[0] == 'Tableware') and score[0] > .96 and n_chars < 100:
                 print('verified as food!')
                 print()
                 print(urls[labels.index(label)])
                 print()
                 return urls[labels.index(label)]
-    except IndexError:
-        print('label missing, not verified as food')
-        return None
-        
-        
-    if label[0] in ['Food', 'Tableware']:
-        char_counts = []   
-        for url in urls:
-            text_response = client.text_detection(image=image)
-            texts = text_response.text_annotations
-            n_chars = 0
-            if len(texts)>0:
-                n_chars = len(texts[0].description)
-            char_counts.append(n_chars)
-        
-        print('verification filter:')
-        print('label must be Food or Tableware')
-        print('score must be above .96')
-        print('number of chars must be below 100')
-        print()  
-    
-        print(f'labels: {labels}')
-        print(f'label score: {scores}')
-        print(f'chars detected: {char_counts}')
-        print()
-    
-        for label,score,chars in zip(labels,scores,char_counts):
-            if (label[0] == 'Food' or label[0] == 'Tableware') and score[0] > .96 and chars < 100:
-                print('verified as food!')
-                print()
-                print(urls[labels.index(label)])
-                print()
-                return urls[labels.index(label)]
-        
+        except:
+            pass
+
     print('not verified as food.')
     print()
     return None
