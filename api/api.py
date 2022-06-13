@@ -17,8 +17,8 @@ def index():
     return dict(greeting="hello")
 
 @app.get("/dish")
-def api_function():
-    text = detect_text()
+def api_function(path):
+    text = detect_text(path)
     text_clean= strip(text)
 
     text_clean_url=[]
