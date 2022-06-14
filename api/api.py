@@ -1,4 +1,7 @@
-from menu_me.app import detect_text, find_ingredients, find_recipe, strip, search_image, translate_text, allergy_check
+from menu_me.app import detect_text, strip, search_image, translate_text
+from menu_me.ingredient_function import find_ingredients
+from menu_me.recipe_function import find_recipe
+from menu_me.allergy_function import allergy_check
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
