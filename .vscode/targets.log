@@ -8,10 +8,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Mon Jun 13 13:33:56 2022
+# Make data base, printed on Tue Jun 14 16:27:32 2022
 
 # Variables
 
+ 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
@@ -49,7 +50,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # makefile (from `Makefile', line 70)
 PYPI_USERNAME = <AUTHOR>
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-f32fb356-7128-4809-8bf1-8c1da17e2289.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-62d404b6-56f8-481c-811a-962082c412fa.sock
 # environment
 VSCODE_CWD = /Users/rubenstuiver/code/nganguyenny/menu_me
 # environment
@@ -145,7 +146,7 @@ TERM_PROGRAM_VERSION = 440
 # environment
 NVM_DIR = /Users/rubenstuiver/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.7427544.7427550.263C9D71-A675-4CD9-AC82-3FC9E50382F6
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.7427544.7427550.6CDB7949-0B94-4661-AAC3-38293E829985
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -195,9 +196,9 @@ VSCODE_PID = 46636
 
 # Directories
 
-# . (device 16777234, inode 6827776): 26 files, no impossibilities.
+# . (device 16777234, inode 6827776): 27 files, no impossibilities.
 
-# 26 files, no impossibilities in 1 directories.
+# 27 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -311,9 +312,9 @@ count_lines:
 	
 
 deploy_heroku:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
+ 
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 60):
 	@heroku git:remote -a  ${APP_NAME}
@@ -407,6 +408,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Jun 13 13:33:56 2022
+# Finished Make data base on Tue Jun 14 16:27:32 2022
 
  
