@@ -11,18 +11,18 @@ from google.oauth2 import service_account
 import json
 
 # ######## LOCAL ENV ##############
-# from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-# #Connecting with GCP
-# env_path = find_dotenv()
-# load_dotenv(env_path)
-# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-# GOOGLE_CX = os.getenv('GOOGLE_CX')
-# CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
+#Connecting with GCP
+env_path = find_dotenv()
+load_dotenv(env_path)
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_CX = os.getenv('GOOGLE_CX')
+CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
-GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-GOOGLE_CX = os.environ.get('GOOGLE_CX')
-CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
+# GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+# GOOGLE_CX = os.environ.get('GOOGLE_CX')
+# CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
 ###############################
 ###### Google Vision API ######
