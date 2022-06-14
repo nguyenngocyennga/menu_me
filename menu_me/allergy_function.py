@@ -1,0 +1,89 @@
+import pandas as pd
+food_df = pd.read_csv('../data_to_include/ruben_food_data.csv')
+
+
+#dish_translated="buttermilk pancakes"
+def allergy_check(dish_translated):
+    common_allergens_list_cowsmilk=['cheese','parmesan','butter','margarine','yogurt','cream','ice cream','milk','milk powder']
+    common_allergens_list_eggs=['egg', 'omelette']
+    common_allergens_list_treenuts=['brazil nut', 'almond', 'cashew', 'macadamia nut','pistachio','pine nut','walnut']
+    common_allergens_list_peanuts=['peanut']
+    common_allergens_list_shellfish=['shrimp','prawn','crayfish', 'lobster','squid','scallops']
+    common_allergens_list_wheat=['wheat', 'pasta','noodle','bread','crust','flour']
+    common_allergens_list_soy=['soy','tofu','soya','soybean']
+    common_allergens_list_fish=['fish','seafood']
+    true_or_false_cowsmilk=[]
+    true_or_false_eggs=[]
+    true_or_false_treenuts=[]
+    true_or_false_peanuts=[]
+    true_or_false_shellfish=[]
+    true_or_false_wheat=[]
+    true_or_false_soy=[]
+    true_or_false_fish=[]
+
+    if dish_translated=="":
+        return 'There was no dish input'
+
+    if len(food_df[food_df['Title']==dish_translated]) != 0:
+        pot_food_df = food_df[food_df['Title']==dish_translated]
+
+    else:
+        pot_food_df=food_df[food_df['Title'].str.contains(dish_translated, na=False)]
+
+    if len(pot_food_df)==0:
+        return "We do not recoginze this dish"
+
+    else:
+        possible_allergies= []
+        # Cowsmilk
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_cowsmilk.append(any(ele in row for ele in common_allergens_list_cowsmilk))
+        if True in true_or_false_cowsmilk:
+            possible_allergies.append('There is a chance that this dish contains cowsmilk!')
+
+        # Eggs
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_eggs.append(any(ele in row for ele in common_allergens_list_eggs))
+        if True in true_or_false_eggs:
+            possible_allergies.append('There is a chance that this dish contains Eggs!')
+
+        # Tree nuts
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_treenuts.append(any(ele in row for ele in common_allergens_list_treenuts))
+        if True in true_or_false_treenuts:
+            possible_allergies.append('There is a chance that this dish contains treenuts!')
+
+        # Peanuts
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_peanuts.append(any(ele in row for ele in common_allergens_list_peanuts))
+        if True in true_or_false_peanuts:
+            possible_allergies.append('There is a chance that this dish contains peanuts!')
+
+        # Shellfish
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_shellfish.append(any(ele in row for ele in common_allergens_list_shellfish))
+        if True in true_or_false_shellfish:
+            possible_allergies.append('There is a chance that this dish contains shellfish!')
+
+        # Wheat
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_wheat.append(any(ele in row for ele in common_allergens_list_wheat))
+        if True in true_or_false_wheat:
+            possible_allergies.append('There is a chance that this dish contains wheat!')
+
+        # Soy
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_soy.append(any(ele in row for ele in common_allergens_list_soy))
+        if True in true_or_false_soy:
+            possible_allergies.append('There is a chance that this dish contains soy!')
+
+        # Fish
+        for row in pot_food_df['Cleaned_Ingredients']:
+            true_or_false_fish.append(any(ele in row for ele in common_allergens_list_fish))
+        if True in true_or_false_fish:
+            possible_allergies.append('There is a chance that this dish contains fish!')
+
+        if len(possible_allergies) != 0:
+            return possible_allergies
+        else:
+            return 'This dish has most likely no ingredients that are known to our allergenes list'
