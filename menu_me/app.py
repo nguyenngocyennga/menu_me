@@ -177,7 +177,7 @@ def search_image(query):
     print(url)
     print()
 
-    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae','fuyung hai']
+    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae','fuyung hai','loaded baked potatoes', 'strawberry cake', ]
 
     if query.lower() in verified_queries:
         print(f'{query} already in known foods database, no need to verify!')
@@ -301,8 +301,8 @@ def translate_text(target, text):
     # Text can also be a sequence of strings, in which case this method
     # will return a sequence of results for each text.
     result = translate_client.translate(text, target_language=target)
-
+    dish_translated =result["translatedText"]
     # print(u"Text: {}".format(result["input"]))
     # print(u"Translation: {}".format(result["translatedText"]))
     # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
-    return result["translatedText"]
+    return dish_translated

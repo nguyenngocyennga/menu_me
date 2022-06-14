@@ -6,8 +6,9 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
 
-# Make data base, printed on Fri Jun 10 10:13:52 2022
+# Make data base, printed on Mon Jun 13 13:33:56 2022
 
 # Variables
 
@@ -48,7 +49,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # makefile (from `Makefile', line 70)
 PYPI_USERNAME = <AUTHOR>
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-39c9b922-a07a-40a7-984b-db4151072d8d.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/vscode-ipc-f32fb356-7128-4809-8bf1-8c1da17e2289.sock
 # environment
 VSCODE_CWD = /Users/rubenstuiver/code/nganguyenny/menu_me
 # environment
@@ -86,7 +87,7 @@ MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /De
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/rubenstuiver/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /Users/rubenstuiver/Library/Application Support/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = rubenstuiver
 # environment
@@ -99,8 +100,6 @@ PYTHONBREAKPOINT = ipdb.set_trace
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
-# environment
-GCR_MULTI_REGION = asia.gcr.io
 # environment
 XPC_FLAGS = 0x0
 # default
@@ -116,9 +115,7 @@ USER = rubenstuiver
 # makefile
 .DEFAULT_GOAL := install_requirements
 # environment
-TERM_SESSION_ID = E260F46B-38F9-495F-AAD1-43C7F09B44B5
-# environment
-GCP_PROJECT_ID = menu-me-352703
+TERM_SESSION_ID = D13AF40E-B6AA-49AF-9304-082DC34089E1
 # environment
 LESS = -R
 # automatic
@@ -134,9 +131,9 @@ TMPDIR = /var/folders/jv/yk7cpcx97ln8wgt109nxk6c00000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/rubenstuiver/Library/Application Support/Code/1.67.2-main.sock
+VSCODE_IPC_HOOK = /Users/rubenstuiver/Library/Application Support/Code/1.68.0-main.sock
 # environment
-PYTHONPATH = /Users/rubenstuiver/code/rubenstuiver/data-challenges/04-Decision-Science:"/Users/rubenstuiver/code/nganguyenny/menu_me:$PYTHONPATH"
+PYTHONPATH = /Users/rubenstuiver/code/rubenstuiver/data-challenges/04-Decision-Science:"/Users/rubenstuiver/code/nganguyenny/menu_me/raw_data:$PYTHONPATH"
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -148,7 +145,7 @@ TERM_PROGRAM_VERSION = 440
 # environment
 NVM_DIR = /Users/rubenstuiver/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.4903456.4903462.C2AD390C-F092-4A22-AA2F-D0B7F77F2FD9
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.7427544.7427550.263C9D71-A675-4CD9-AC82-3FC9E50382F6
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -168,8 +165,6 @@ EDITOR = code
 # environment
 PAGER = less
 # environment
-DOCKER_IMAGE_NAME = api-menu-me-docker
-# environment
 LC_ALL = C
 # environment
 PYENV_VIRTUALENV_DISABLE_PROMPT = 1
@@ -186,15 +181,13 @@ PYENV_VIRTUALENV_INIT = 1
 # environment
 MAKELEVEL := 0
 # environment
-GCR_REGION = asia-southeast1
-# environment
 LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 69549
+VSCODE_PID = 46636
 # variable set hash-table stats:
-# Load=91/1024=9%, Rehash=0, Collisions=2/117=2%
+# Load=87/1024=8%, Rehash=0, Collisions=2/113=2%
 
 # Pattern-specific Variable Values
 
@@ -202,9 +195,9 @@ VSCODE_PID = 69549
 
 # Directories
 
-# . (device 16777234, inode 6827776): 24 files, no impossibilities.
+# . (device 16777234, inode 6827776): 26 files, no impossibilities.
 
-# 24 files, no impossibilities in 1 directories.
+# 26 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -305,7 +298,6 @@ count_lines:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  commands to execute (from `Makefile', line 34):
 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
 	'{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
@@ -319,6 +311,7 @@ count_lines:
 	
 
 deploy_heroku:
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -414,6 +407,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Jun 10 10:13:52 2022
+# Finished Make data base on Mon Jun 13 13:33:56 2022
 
  
