@@ -20,37 +20,33 @@ def index():
     return dict(greeting="hello")
 
 @app.get("/dish")
-def api_function(path):
+def api_get_all_dishnames(path):
     text = detect_text(path)
     text_clean= strip(text)
+    return text_clean
 
-    text_clean_url=[]
-    text_clean_translated=[]
-    for item in text_clean:
-        img_url = search_image(item)
-        text_clean_url.append(img_url)
-        translated_name = translate_text(target='en', text=item)
-        text_clean_translated.append(translated_name)
-        allergy = allergy_check(translated_name)
-        recipe = find_recipe(translated_name)
-        ingredients = find_ingredients(translated_name)
-        print('')
-        print('Original Dish Name:: ', item)
-        print('Image Url: ', img_url)
-        print('Translated Name: ', translated_name)
-        print('allergy:', allergy)
-        print('recipe', recipe )
-        print('ingredients:', ingredients )
+@app.get("/item")
+def api_item_details(item,language):
+    img_url = search_image(item)
+    translated_name = translate_text(target=language, text=item)
+    allergy = allergy_check(translated_name)
+    recipe = find_recipe(translated_name)
+    ingredients = find_ingredients(translated_name)
+    print('')
+    print('Original Dish Name:: ', item)
+    print('Image Url: ', img_url)
+    print('Translated Name: ', translated_name)
+    print('allergy:', allergy)
+    print('recipe', recipe )
+    print('ingredients:', ingredients )
 
-    final_menu ={
-            'dish_name': text_clean,
-            'img_url': text_clean_url,
-            'translated_name': text_clean_translated,
+    full_item = {
+            'dish_name': item,
+            'img_url': img_url,
+            'translated_name': translated_name,
             'allergy_information': allergy,
             'recipe': recipe,
             'ingredients:': ingredients
-                }
-    print('############################################')
-    print('###   API is successfully constructed!   ###')
-    print('############################################')
-    return final_menu
+            }
+    
+    return full_item
