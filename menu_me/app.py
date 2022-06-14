@@ -301,11 +301,11 @@ def translate_text(target, text):
     # Text can also be a sequence of strings, in which case this method
     # will return a sequence of results for each text.
     result = translate_client.translate(text, target_language=target)
-
+    dish_translated =result["translatedText"]
     # print(u"Text: {}".format(result["input"]))
     # print(u"Translation: {}".format(result["translatedText"]))
     # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
-    return result["translatedText"]
+    return dish_translated
 
 
 ################################
@@ -320,10 +320,19 @@ def allergy_check(dish_translated):
                        'wheat', 'pasta', 'noodle', 'bread', 'crust','soy', 'tofu', 'soya','soybean','fish', 'seafood']
     true_or_false=[]
     pot_food_df=food_df[food_df['Title'].str.contains(dish_translated, na=False)]
+
     if dish_translated=="":
         return 'There was no dish input'
+
+    if len(food_df[food_df['Title']==dish_translated]) != 0:
+        pot_food_df = food_df[food_df['Title']==dish_translated]
+
+    else:
+        pot_food_df=food_df[food_df['Title'].str.contains(dish_translated, na=False)]
+
     if len(pot_food_df)==0:
         return "We do not recoginze this dish"
+
     else:
         for row in pot_food_df['Cleaned_Ingredients']:
             true_or_false.append(any(ele in row for ele in common_allergens_list))
@@ -331,3 +340,36 @@ def allergy_check(dish_translated):
             return 'Yes it potentially has ingredients that could start an allergy reaction'
         else:
             return 'This dish has most likely no ingredients that are known to our allergenes list'
+
+
+#################################
+#### Find ingredient function ###
+#################################
+def find_ingredients(dish_translated):
+    if dish_translated=="":
+        return 'There was no dish input'
+    if len(food_df[food_df['Title']==dish_translated]) != 0:
+        small_food_df = food_df[food_df['Title']==dish_translated].reset_index()
+        ingredients=small_food_df['Cleaned_Ingredients'][0]
+        return ingredients
+        ### add a preprocessor for the "[]" ###
+    else:
+        return 'No ingredients found'
+#find_ingredients('brownie pudding cake')
+
+
+
+#################################
+#####  Find recipe function  ####
+#################################
+def find_recipe(dish_translated):
+    if dish_translated=="":
+        return 'There was no dish input'
+    if len(food_df[food_df['Title']==dish_translated]) != 0:
+        small_food_df = food_df[food_df['Title']==dish_translated].reset_index()
+        recipe=small_food_df['Instructions'][0]
+        return recipe
+    ### add preprocessor for the '\n' ###
+    else:
+        return 'No ingredients found'
+#find_recipe('spanakopita')
