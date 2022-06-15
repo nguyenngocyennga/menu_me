@@ -10,7 +10,8 @@ def find_recipe(dish_translated):
     if len(food_df[food_df['Title']==dish_translated]) != 0:
         small_food_df = food_df[food_df['Title']==dish_translated].reset_index()
         ins=small_food_df['Instructions'][0]
-        ins=ins.replace('\n', ' ')
+        # ins=ins.replace('\n', ' ')
+        ins=ins.split('\n')
         return ins
     else:
         return 'No recipe found'
