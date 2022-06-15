@@ -85,7 +85,7 @@ def allergy_check(dish_translated):
             possible_allergies.append('fish')
 
         if len(possible_allergies) != 0:
-            return possible_allergies
+            return f"It is likely that this dish contains at least one of the following ingredients: {', '.join(possible_allergies)}"
         else:
             return 'This dish has most likely no ingredients that are known to our allergenes list'
 
@@ -163,7 +163,7 @@ def allergy_check(dish_translated):
 
 
         if len(possible_allergies) != 0:
-            return possible_allergies
+            return f"It is likely that this dish contains at least one of the following ingredients: {', '.join(possible_allergies)}"
         else:
             return 'No information found for this dish'
 

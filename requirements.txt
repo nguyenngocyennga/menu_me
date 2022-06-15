@@ -29,5 +29,7 @@ fastapi
 uvicorn
 oauth2client
 
-difflib
+cdifflib
 matplotlib
+urllib3
+pillow
