@@ -1,5 +1,5 @@
 import pandas as pd
-food_df = pd.read_csv('../data/ruben_food_data.csv')
+food_df = pd.read_csv('data/ruben_food_data.csv')
 
 #################################
 #### Find ingredient function ###
