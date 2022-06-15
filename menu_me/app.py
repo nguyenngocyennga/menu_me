@@ -499,7 +499,7 @@ def save_one_menu_box(path, coord_dict, count):
     response = requests.get(path)
     img = Image.open(BytesIO(response.content))
 
-    # plt.figure(figsize=(20,10))
+    plt.figure(figsize=(10, 20))
     plt.axis("off")
     plt.imshow(img)
     
@@ -523,6 +523,12 @@ def save_one_menu_box(path, coord_dict, count):
 
     menu_star_url = f"https://storage.googleapis.com/menu_me_bucket/{cloud_filename}"
     print(menu_star_url)
+
+    with os.scandir(base_url) as it:
+        for entry in it:
+            if entry.is_file():
+                os.unlink(os.path.join(path, entry.name))
+
     return menu_star_url
 
 
