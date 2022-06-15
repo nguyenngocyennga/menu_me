@@ -11,19 +11,20 @@ from google.oauth2 import service_account
 from google.cloud import storage
 import json
 
-# ######## LOCAL ENV ##############
-from dotenv import load_dotenv, find_dotenv
+############################## LOCAL ENV ################################
+# from dotenv import load_dotenv, find_dotenv
 
-#Connecting with GCP
-env_path = find_dotenv()
-load_dotenv(env_path)
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-GOOGLE_CX = os.getenv('GOOGLE_CX')
-CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
+# #Connecting with GCP
+# env_path = find_dotenv()
+# load_dotenv(env_path)
+# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+# GOOGLE_CX = os.getenv('GOOGLE_CX')
+# CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
-# GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-# GOOGLE_CX = os.environ.get('GOOGLE_CX')
-# CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
+############################## CLOUD RUN ENV #############################
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+GOOGLE_CX = os.environ.get('GOOGLE_CX')
+CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
 ###############################
 ###### Google Vision API ######
@@ -488,23 +489,31 @@ def map_text_boxes(detected_df, stripped_menu, language='en'):
     return box_dict
 
 def save_one_menu_box(path, coord_dict, count):
+    import matplotlib
+    matplotlib.use('Agg')
     from matplotlib import pyplot as plt
-    
-    plt.figure(figsize=(20,10))
-    a = plt.imread(path)
+    from PIL import Image
+    import requests
+    from io import BytesIO
+
+    response = requests.get(path)
+    img = Image.open(BytesIO(response.content))
+
+    # plt.figure(figsize=(20,10))
     plt.axis("off")
-    # plt.imshow(a)
+    plt.imshow(img)
     
     for value in coord_dict.values():
-        plt.scatter(x = value[0][0], y = value[0][1], alpha=.6, marker ="*", c='red', edgecolors='blue', s=500)
+        plt.scatter(x = value[0][0], y = value[0][1], alpha=.6, marker ="*", c='red', edgecolors='blue', s=1500)
     
     
     unique_name = path.split('/')[-1].split('.')[0]
     base_url = "data/menu_star_temp"
     item_name = list(coord_dict.keys())[0].replace(" ", "-").lower()
     cloud_filename = f'{count}_{unique_name}_{item_name}.png'
-    full_local_path = f"{base_url}/cloud_filename"
+    full_local_path = f"{base_url}/{cloud_filename}"
     plt.savefig(full_local_path)
+    plt.close()
 
     credentials = service_account.Credentials.from_service_account_info(json.loads(CREDENTIALS_JSON_GOOGLE_CLOUD))
     client = storage.Client(credentials=credentials, project='menu-me-352703')
@@ -513,7 +522,7 @@ def save_one_menu_box(path, coord_dict, count):
     blob.upload_from_filename(full_local_path)
 
     menu_star_url = f"https://storage.googleapis.com/menu_me_bucket/{cloud_filename}"
-    plt.close()
+    print(menu_star_url)
     return menu_star_url
 
 

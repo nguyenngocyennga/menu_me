@@ -13,5 +13,5 @@ def find_recipe(dish_translated):
         ins=ins.replace('\n', ' ')
         return ins
     else:
-        return 'No ingredients found'
+        return 'No recipe found'
 #find_recipe('spanakopita')
