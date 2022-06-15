@@ -1,4 +1,4 @@
-from menu_me.app import detect_text, strip, search_image, translate_text
+from menu_me.app import detect_text, strip, search_image, translate_text, get_language, detect_text_boxes, map_text_boxes, save_one_menu_box
 from menu_me.ingredient_function import find_ingredients
 from menu_me.recipe_function import find_recipe
 from menu_me.allergy_function import allergy_check
@@ -21,9 +21,22 @@ def index():
 
 @app.get("/dish")
 def api_get_all_dishnames(path):
-    text = detect_text(path)
-    text_clean= strip(text)
-    return text_clean
+    response = detect_text(path)
+    language = get_language(response)
+    stripped_menu= strip(response)
+    detected_df = detect_text_boxes(response)
+    box_dict = map_text_boxes(detected_df, stripped_menu, language)
+    # result = {}
+
+    # count = 0
+    # for key,value in box_dict.items():
+    #     if value != None:
+    #         coord_dict = {key:value}
+    #         result[key] = save_one_menu_box(path, coord_dict, count)
+    #         count += 1
+    #     else:
+    #         result[key] = None
+    return box_dict
 
 @app.get("/item")
 def api_item_details(item,target='en'):
