@@ -28,3 +28,8 @@ streamlit
 fastapi
 uvicorn
 oauth2client
+
+cdifflib
+matplotlib
+urllib3
+pillow

@@ -8,9 +8,10 @@ import string
 from google_images_search import GoogleImagesSearch
 import os
 from google.oauth2 import service_account
+from google.cloud import storage
 import json
 
-######### LOCAL ENV ##############
+############################## LOCAL ENV ################################
 # from dotenv import load_dotenv, find_dotenv
 
 # #Connecting with GCP
@@ -20,6 +21,7 @@ import json
 # GOOGLE_CX = os.getenv('GOOGLE_CX')
 # CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
+############################## CLOUD RUN ENV #############################
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 GOOGLE_CX = os.environ.get('GOOGLE_CX')
 CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
@@ -177,7 +179,7 @@ def search_image(query):
     print(url)
     print()
 
-    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae','fuyung hai']
+    verified_queries = ['cheeseburger','burger','pizza','fried chicken','ice cream sundae','fuyung hai','loaded baked potatoes', 'strawberry cake', ]
 
     if query.lower() in verified_queries:
         print(f'{query} already in known foods database, no need to verify!')
@@ -301,8 +303,227 @@ def translate_text(target, text):
     # Text can also be a sequence of strings, in which case this method
     # will return a sequence of results for each text.
     result = translate_client.translate(text, target_language=target)
-
+    dish_translated =result["translatedText"]
     # print(u"Text: {}".format(result["input"]))
     # print(u"Translation: {}".format(result["translatedText"]))
     # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
-    return result["translatedText"]
+    return dish_translated
+
+
+################################################
+######            Menu annotation         ######
+################################################
+def get_language(response):
+    language = response.text_annotations[0].locale
+    print('language:')
+    print(language)
+    print()
+    return language
+
+def detect_text_boxes(response):    
+    import pandas as pd
+    
+    texts = response.text_annotations
+    language = texts[0].locale
+
+    text_list = []
+    top_left = []
+    top_right = []
+    bottom_left = []
+    bottom_right = []
+
+
+    for text in texts[1:]:
+        new_text = '''{}'''.format(text.description)
+        text_list.append(new_text)
+        
+        vertices = [tuple((vertex.x, vertex.y)) for vertex in text.bounding_poly.vertices]
+
+        top_left.append(vertices[0])
+        top_right.append(vertices[1])
+        bottom_left.append(vertices[3])
+        bottom_right.append(vertices[2])
+        
+    detected_df = pd.DataFrame({
+        'text': text_list,
+        'top_left': top_left,
+        'top_right': top_right,
+        'bottom_left': bottom_left,
+        'bottom_right': bottom_right
+    })
+
+    if response.error.message:
+        raise Exception(
+            '{}\nFor more info on error messages, check: '
+            'https://cloud.google.com/apis/design/errors'.format(
+                response.error.message))
+    
+    if language in ['zh','zh-hk','zh-cn','zh-sg','zh-tw','ja','ko']:
+        split_chars = []
+        for item in detected_df.text:
+            split_chars.append([char for char in item])
+        
+        detected_df['text'] = split_chars
+        detected_df = detected_df.explode('text')
+    
+    print(detected_df.head())
+    print()
+        
+    return detected_df
+
+
+def map_text_boxes(detected_df, stripped_menu, language='en'):
+    from itertools import combinations
+    import pandas as pd
+    from statistics import stdev
+    import string
+
+    test_menu_df = detected_df
+    
+    if language in ['ar','iw','fa','ur','sd','ps','yi']:
+        box_dict = dict()
+        for item in stripped_menu:
+            box_dict[item] = None
+        print(box_dict)
+        print()
+        return box_dict
+    
+    if language in ['zh','zh-hk','zh-cn','zh-sg','zh-tw','ja','ko'] and len(detected_df)>225:
+        box_dict = dict()
+        for item in stripped_menu:
+            box_dict[item] = None
+        print(box_dict)
+        print()
+        return box_dict
+
+    split_keys = []
+    if language in ['zh','zh-hk','zh-cn','zh-sg','zh-tw','js','ja','ko' ]:
+        for item in stripped_menu:
+            split_keys.append([char for char in item])
+            
+    else:
+        for item in stripped_menu:
+            split_keys.append(item.split())
+
+    temp_dfs = []
+    for key_set in split_keys:
+        temp_df = pd.DataFrame()
+        for key in key_set:
+            mask = test_menu_df['text'] == key
+            temp_df = pd.concat([temp_df, test_menu_df[mask]])
+            temp_df = temp_df.drop_duplicates()
+        temp_df['position'] = temp_df['bottom_left'] 
+
+        word_positions = list(zip(temp_df.text, temp_df.position))
+        combos = []
+
+        for combo in list(combinations(word_positions, len(key_set))): 
+            text_portion = [pair[0] for pair in combo]
+            if len(set(text_portion)) == len(key_set):
+                combos.append(combo)
+        calc_df = pd.DataFrame(combos)
+
+        position_stds = []
+        for combo in combos:
+            position = [pair[1] for pair in combo]
+            if len(position) >= 2:
+                calc_nums = [pair[1] for pair in position]
+                position_stds.append(stdev(calc_nums))
+            else:
+                position_stds.append(0)
+        calc_df['position_stds'] = position_stds
+        calc_df = calc_df.sort_values(by=['position_stds'])
+
+        if len(calc_df) > 0:
+            calc_df = calc_df.iloc[[0]]
+
+        keep = []
+        keep_text = []
+        keep_pos = []
+        for column in calc_df:
+            if column != 'position_stds':
+                keep.append(calc_df[column].to_string(index=False))
+        for item in keep:
+            pair = item.split(', ')
+            temp_text = [char for char in pair[0] if char not in '[](),']
+            temp_pos = [char for char in pair[1:]]
+            temp_pos = str(temp_pos)
+            temp_pos = [char for char in temp_pos if char in string.digits or char not in string.punctuation]
+            temp_text = ''.join(temp_text)
+            temp_pos = ''.join(temp_pos)
+            temp_pos = temp_pos.split(' ')
+            temp_pos = [int(n) for n in temp_pos]
+            temp_pos = tuple(temp_pos)
+
+            keep_text.append(''.join(temp_text))
+            keep_pos.append(temp_pos)
+
+        merge_df = pd.DataFrame()
+        for text,pos in zip(keep_text,keep_pos):
+            merge_df = pd.concat([merge_df, pd.DataFrame({'text': [text],
+                                    'top_left': [None],
+                                    'top_right': [None],
+                                    'bottom_left': [None],
+                                    'bottom_right': [None],
+                                    'position': [pos]})], ignore_index=False)
+        temp_df = pd.concat([temp_df,merge_df],ignore_index=False)
+        if None in temp_df['top_left'].values:
+            temp_df = temp_df.loc[temp_df.duplicated(subset='position', keep=False)]
+        temp_df = temp_df.dropna()
+
+        for index in temp_df.index:
+            if index in test_menu_df.index:
+                test_menu_df = test_menu_df.drop(index)
+        temp_dfs.append(temp_df)
+        
+    box_dict = {}
+
+    for i, item in enumerate(stripped_menu):
+        try:
+            box_dict[item] = [temp_dfs[i].iloc[0]['top_left'],
+                     temp_dfs[i].iloc[-1]['bottom_right']]
+        except IndexError:
+            box_dict[item] = None
+    
+    print(box_dict)
+    return box_dict
+
+def save_one_menu_box(path, coord_dict, count):
+    import matplotlib
+    matplotlib.use('Agg')
+    from matplotlib import pyplot as plt
+    from PIL import Image
+    import requests
+    from io import BytesIO
+
+    response = requests.get(path)
+    img = Image.open(BytesIO(response.content))
+
+    # plt.figure(figsize=(20,10))
+    plt.axis("off")
+    plt.imshow(img)
+    
+    for value in coord_dict.values():
+        plt.scatter(x = value[0][0], y = value[0][1], alpha=.6, marker ="*", c='red', edgecolors='blue', s=1500)
+    
+    
+    unique_name = path.split('/')[-1].split('.')[0]
+    base_url = "data/menu_star_temp"
+    item_name = list(coord_dict.keys())[0].replace(" ", "-").lower()
+    cloud_filename = f'{count}_{unique_name}_{item_name}.png'
+    full_local_path = f"{base_url}/{cloud_filename}"
+    plt.savefig(full_local_path)
+    plt.close()
+
+    credentials = service_account.Credentials.from_service_account_info(json.loads(CREDENTIALS_JSON_GOOGLE_CLOUD))
+    client = storage.Client(credentials=credentials, project='menu-me-352703')
+    bucket = client.get_bucket('menu_me_bucket')
+    blob = bucket.blob(cloud_filename)
+    blob.upload_from_filename(full_local_path)
+
+    menu_star_url = f"https://storage.googleapis.com/menu_me_bucket/{cloud_filename}"
+    print(menu_star_url)
+    return menu_star_url
+
+
+
