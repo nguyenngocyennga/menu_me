@@ -12,19 +12,19 @@ from google.cloud import storage
 import json
 
 ############################## LOCAL ENV ################################
-# from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-# #Connecting with GCP
-# env_path = find_dotenv()
-# load_dotenv(env_path)
-# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-# GOOGLE_CX = os.getenv('GOOGLE_CX')
-# CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
+#Connecting with GCP
+env_path = find_dotenv()
+load_dotenv(env_path)
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_CX = os.getenv('GOOGLE_CX')
+CREDENTIALS_JSON_GOOGLE_CLOUD = os.getenv('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
 ############################## CLOUD RUN ENV #############################
-GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-GOOGLE_CX = os.environ.get('GOOGLE_CX')
-CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
+# GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+# GOOGLE_CX = os.environ.get('GOOGLE_CX')
+# CREDENTIALS_JSON_GOOGLE_CLOUD = os.environ.get('CREDENTIALS_JSON_GOOGLE_CLOUD')
 
 ###############################
 ###### Google Vision API ######
@@ -59,23 +59,19 @@ def strip(response):
     chars_to_remove = '0123456789!"\'#$%&()*+,-./:;<=>?@[\]^_`{|}~♦●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€'
 
     # remove entry if it exactly matches any of these
-    drop_exact_words = ['sandwiches','restaurant','menu',
-                        'restaurant menu','thank you','drinks',
-                        'appetizer','appetizers','mains','dessert',
-                        'side','sides','side order','breakfast','lunch'
-                       'dinner','supper','starter','starters','local',
-                        'fresh','food','main','your','logo','brand name']
+    drop_exact_words = ['sandwiches','restaurant','menu', 'restaurant menu','thank you','drinks', 'appetizer','appetizers','mains','dessert', 'side','sides','side order','breakfast','lunch'
+                       'dinner','supper','starter','starters','local', 'fresh','food','main','your','logo','brand name',
+                        'ooftop', 'two slice toast  frill chicken  ice berg  tomato slice', 'mozzarella cheese serve with French fries and chili', 'tomato sauce', 'white bun  beef patty  lettuce  tomato  cheese', 'bbq sauce  pork bacon  and french fries', 'stir fry noodle with veggie  chicken satay  and', 'fried egg on top and crackers', 'stir fry rice with veggie  chicken satay  and fried', 'egg on top with crackers', 'grill chicken leg serve with sayur kalasan  rice', 'grill chicken satay serve with rice  crackers', 'seaduction']
 
     # remove these words from entry
     words_to_remove = ['menu','restaurant','price','appetizer',
-                       'appetizers','course','price','extra','extras']
+                       'appetizers','course','price','extra','extras', '      k']
 
     # remove entry if it contains any of these
-    drop_contain_words = ['tax','consumer','advisory','illness','facebook','instagram']
+    drop_contain_words = ['tax','consumer','advisory','illness','facebook','instagram', 'ooftop']
 
     # remove entry if it starts with any of these
-    drop_start_words = ['add','include','includes','including','lorem','with','and',
-                       'served','serve']
+    drop_start_words = ['add','include','includes','including','lorem','with','and', 'served','serve']
 
     # drop entry if it contains fewer chars than minimum
     min_length = 4
