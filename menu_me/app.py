@@ -17,6 +17,8 @@ from matplotlib import pyplot as plt
 import requests
 from itertools import combinations
 from statistics import stdev
+import six
+from google.cloud import translate_v2 as translate
 
 ############################## LOCAL ENV ################################
 # from dotenv import load_dotenv, find_dotenv
@@ -67,7 +69,7 @@ def strip(response):
     chars_to_remove = '0123456789!"\'#$%&()*+,-./:;<=>?@[\]^_`{|}~♦●★‒…£¡™¢∞§¶•ªº–≠≠œ∑´®†¥¨≤≥÷ç√€。'
 
     # remove entry if it exactly matches any of these
-    drop_exact_words = ['sandwiches','restaurant','menu',
+    drop_exact_words = ['sandwiches','restaurant','menu', 'rooftop', 
                         'restaurant menu','thank you','drinks',
                         'appetizer','appetizers','mains','dessert',
                         'side','sides','side order','breakfast','lunch'
@@ -77,7 +79,8 @@ def strip(response):
                        'saturday','sunday','coca cola cola','ooftop','two slice toast  frill chicken  ice berg  tomato slice', 
                         'mozzarella cheese serve with French fries and chili', 'tomato sauce','White bun  beef patty  lettuce  tomato  cheese', 'BBQ sauce  pork bacon  and french fries',
                         'Stir fry noodle with veggie  chicken satay  and', 'fried egg on top and crackers','Stir fry rice with veggie  chicken satay  and fried', 'egg on top with crackers','Grill chicken leg serve with sayur kalasan  rice',
-                        'Grill chicken satay serve with rice  crackers','seaduction','best of british café','maishnasons']
+                        'Grill chicken satay serve with rice  crackers','seaduction','best of british café','maishnasons',
+                        'profiles', 'tab window', 'help', 'blessing', 'g search or type url']
     
     drop_exact_words = [item.lower() for item in drop_exact_words]
 
@@ -179,12 +182,6 @@ def strip(response):
 ##################################
 
 def search_image(query):
-    env_path = find_dotenv()
-    load_dotenv(env_path)
-    
-    GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-    GOOGLE_CX = os.getenv('GOOGLE_CX')
-    
     helper_word = 'recipe'
     
     bev_cv = pd.read_csv('data/stripped_drinks.csv')
@@ -338,9 +335,6 @@ def translate_text(target, text):
     Target must be an ISO 639-1 language code.
     See https://g.co/cloud/translate/v2/translate-reference#supported_languages
     """
-    import six
-    from google.cloud import translate_v2 as translate
-
     translate_client = translate.Client()
 
     if isinstance(text, six.binary_type):
@@ -545,6 +539,3 @@ def show_menu_markers(path, coord_dict, count):
                 os.unlink(os.path.join(path, entry.name))
 
     return menu_star_url
-
-
-
