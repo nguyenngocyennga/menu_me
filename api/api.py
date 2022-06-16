@@ -59,7 +59,7 @@ def api_item_details(item,target='en'):
             'translated_name': translated_name,
             'allergy_information': allergy,
             'recipe': recipe,
-            'ingredients:': ingredients
+            'ingredients': ingredients
             }
 
     return full_item
