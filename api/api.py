@@ -39,14 +39,14 @@ def api_get_all_dishnames(path):
     return result
 
 @app.get("/item")
-def api_item_details(item,target='en'):
-    img_url = search_image(item)
-    translated_name = translate_text(target=target, text=item)
+def api_item_details(text,target_language):
+    img_url = search_image(text)
+    translated_name = translate_text(text=text,target_language=target_language)
     allergy = allergy_check(translated_name)
     recipe = find_recipe(translated_name)
     ingredients = find_ingredients(translated_name)
     print('')
-    print('Original Dish Name: ', item)
+    print('Original Dish Name: ', text)
     print('Image Url: ', img_url)
     print('Translated Name: ', translated_name)
     print('allergy:', allergy)
@@ -54,7 +54,7 @@ def api_item_details(item,target='en'):
     print('ingredients:', ingredients )
 
     full_item = {
-            'dish_name': item,
+            'dish_name': text,
             'img_url': img_url,
             'translated_name': translated_name,
             'allergy_information': allergy,

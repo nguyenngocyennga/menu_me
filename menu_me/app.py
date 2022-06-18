@@ -328,8 +328,7 @@ def search_image(query):
 ###############################
 ######   Translate API   ######
 ###############################
-target='en'
-def translate_text(target, text):
+def translate_text(text, target_language):
     """Translates text into the target language.
 
     Target must be an ISO 639-1 language code.
@@ -342,7 +341,7 @@ def translate_text(target, text):
 
     # Text can also be a sequence of strings, in which case this method
     # will return a sequence of results for each text.
-    result = translate_client.translate(text, target_language=target)
+    result = translate_client.translate(text, target_language=target_language)
     dish_translated =result["translatedText"]
     # print(u"Text: {}".format(result["input"]))
     # print(u"Translation: {}".format(result["translatedText"]))
