@@ -1,74 +1,13 @@
-# Data analysis
-- Document here the project: menu_me
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# **Menu.me** | Web App
+Translate any text-based menu into photos of dishes
 
-Please document the project the better you can.
+### 1. Product Description
+A perfect companion for travelers to get more in touch with local cuisines, equipped with 65+ languages, readily help you get a glimpse of your foods before ordering and know the exact location of it on the menu!
 
-# Startup the project
+### 2. Tech Stack
+Python | Docker | Google Cloud Platform | Google Cloud Storage | Google APIs (Vision, Image Search, Translate) | Figma | FastAPI | Streamlit | Heroku
 
-The initial setup.
-
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
-
-Unittest test:
-```bash
-make clean install test
-```
-
-Check for menu_me in gitlab.com/{group}.
-If your project is not set please add it:
-
-- Create a new project on `gitlab.com/{group}/menu_me`
-- Then populate it:
-
-```bash
-##   e.g. if group is "{group}" and project_name is "menu_me"
-git remote add origin git@github.com:{group}/menu_me.git
-git push -u origin master
-git push -u origin --tags
-```
-
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-menu_me-run
-```
-
-# Install
-
-Go to `https://github.com/{group}/menu_me` to see the project, manage issues,
-setup you ssh public key, ...
-
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
-
-Clone the project and install it:
-
-```bash
-git clone git@github.com:{group}/menu_me.git
-cd menu_me
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-menu_me-run
-```
+### 3. Source Code:
+- Video Demo: https://vimeo.com/800956106
+- Front-end: https://github.com/nganguyenny/menu-me-app      
+- Back-end (API): https://github.com/nganguyenny/menu_me
