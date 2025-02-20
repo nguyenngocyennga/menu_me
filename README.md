@@ -8,6 +8,6 @@ A perfect companion for travelers to get more in touch with local cuisines, equi
 Python | Docker | Google Cloud Platform | Google Cloud Storage | Google APIs (Vision, Image Search, Translate) | Figma | FastAPI | Streamlit | Heroku
 
 ### 3. Source Code:
-- Video Demo: https://vimeo.com/800956106
+- Video Demo: https://vimeo.com/1058674392
 - Front-end: https://github.com/nganguyenny/menu-me-app      
 - Back-end (API): https://github.com/nganguyenny/menu_me
